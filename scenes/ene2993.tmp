@@ -1,0 +1,114 @@
+[gd_scene load_steps=14 format=3 uid="uid://dwgxlmsg2fuvw"]
+
+[ext_resource type="Texture2D" uid="uid://dggconvv2p0cl" path="res://assets/sprites/slime_green.png" id="1_1qpte"]
+[ext_resource type="Script" path="res://scripts/enemigo.gd" id="1_pxjh2"]
+[ext_resource type="PackedScene" uid="uid://3lbr4pbk714t" path="res://scenes/kill_zone.tscn" id="2_lw35x"]
+[ext_resource type="AudioStream" uid="uid://nmfwqri0sv2b" path="res://assets/sounds/monster-death-grunt-131480.mp3" id="4_vv6uo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xm52"]
+atlas = ExtResource("1_1qpte")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e8dei"]
+atlas = ExtResource("1_1qpte")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kkypl"]
+atlas = ExtResource("1_1qpte")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6n11d"]
+atlas = ExtResource("1_1qpte")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i8jvm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xm52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e8dei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kkypl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6n11d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cyhmp"]
+size = Vector2(10, 13)
+
+[sub_resource type="Animation" id="Animation_kgll8"]
+resource_name = "monstruo"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Monstruo:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_2xnlo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Monstruo:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_778kk"]
+_data = {
+"RESET": SubResource("Animation_2xnlo"),
+"monstruo": SubResource("Animation_kgll8")
+}
+
+[node name="enemigo" type="Node2D"]
+position = Vector2(0, -12)
+script = ExtResource("1_pxjh2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_i8jvm")
+autoplay = "default"
+frame = 2
+frame_progress = 0.9194
+
+[node name="KillZone" parent="." instance=ExtResource("2_lw35x")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_cyhmp")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, 5)
+target_position = Vector2(8, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, 5)
+target_position = Vector2(-8, 0)
+
+[node name="Monstruo" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_vv6uo")
+bus = &"moneda"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_778kk")
+}

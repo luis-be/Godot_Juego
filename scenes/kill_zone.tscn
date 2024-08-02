@@ -1,6 +1,44 @@
-[gd_scene load_steps=2 format=3 uid="uid://3lbr4pbk714t"]
+[gd_scene load_steps=6 format=3 uid="uid://3lbr4pbk714t"]
 
 [ext_resource type="Script" path="res://scripts/kill_zone.gd" id="1_trxvu"]
+[ext_resource type="AudioStream" uid="uid://b43qdvwnn0jkl" path="res://assets/sounds/mixkit-short-whistle-fall-406.wav" id="2_a8bnb"]
+
+[sub_resource type="Animation" id="Animation_eewit"]
+resource_name = "caida"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("caida:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_2en6a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("caida:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0jaio"]
+_data = {
+"RESET": SubResource("Animation_2en6a"),
+"caida": SubResource("Animation_eewit")
+}
 
 [node name="KillZone" type="Area2D"]
 collision_mask = 2
@@ -9,6 +47,15 @@ script = ExtResource("1_trxvu")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
+
+[node name="caida" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_a8bnb")
+bus = &"muerte"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0jaio")
+}
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

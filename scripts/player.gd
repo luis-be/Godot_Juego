@@ -25,11 +25,21 @@ func _physics_process(delta):
 	
 	 
 	#Girar el Sprite
-	
 	if direction > 0:
 		animated_sprite.flip_h = false
 	elif direction < 0:
 		animated_sprite.flip_h = true
+		
+	#Animaciones
+	if is_on_floor():
+		if direction == 0:
+			animated_sprite.play("idle")
+		else:
+			animated_sprite.play("correr")	
+	else:
+		animated_sprite.play("saltar")
+		
+
 	
 	if direction:
 		velocity.x = direction * SPEED

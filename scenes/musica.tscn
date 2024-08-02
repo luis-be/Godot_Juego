@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdkvc8pymnc8y"]
+
+[ext_resource type="AudioStream" uid="uid://iccagwp825mq" path="res://assets/music/mixkit-i-wont-surrender-846.mp3" id="1_jbflw"]
+
+[node name="Musica" type="AudioStreamPlayer2D"]
+position = Vector2(568, -612)
+stream = ExtResource("1_jbflw")
+autoplay = true
+bus = &"Musica"
